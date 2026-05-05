@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Portafolio - Stanislav Hromov</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+
+html{
+  height:100%;
+}
+
+body{
+  font-family:Inter,sans-serif;
+  background:#000;
+  color:#fff;
+  overflow:hidden;
+  min-height:100%;
+}
+
+.bg{
+  position:fixed;
+  inset:-50%;
+  background:
+    radial-gradient(circle at 30% 30%, rgba(255,255,255,0.10), transparent 40%),
+    radial-gradient(circle at 70% 60%, rgba(255,255,255,0.06), transparent 45%);
+  filter:blur(120px);
+  animation:move 18s ease-in-out infinite alternate;
+  pointer-events:none;
+}
+
+@keyframes move{
+  0%{transform:translate(-2%, -2%) scale(1)}
+  100%{transform:translate(3%, 2%) scale(1.1)}
+}
+
+header{
+  position:fixed;
+  top:0;
+  width:100%;
+  padding:18px 40px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  background:rgba(0,0,0,0.5);
+  backdrop-filter:blur(14px);
+  border-bottom:1px solid rgba(255,255,255,0.08);
+  z-index:10;
+}
+
+.brand{
+  font-size:12px;
+  letter-spacing:3px;
+}
+
+nav a{
+  color:#888;
+  margin-left:16px;
+  font-size:13px;
+  text-decoration:none;
+}
+
+nav a:hover{color:#fff}
+
+.progress{
+  position:fixed;
+  top:0;
+  left:0;
+  height:2px;
+  width:0%;
+  background:#fff;
+  z-index:20;
+}
+
+.scene{
+  position:absolute;
+  inset:0;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  padding:0 10%;
+  opacity:0;
+  transform:translateY(50px) scale(0.98);
+  transition:0.9s cubic-bezier(.2,.8,.2,1);
+  pointer-events:none;
+}
+
+.scene.active{
+  opacity:1;
+  transform:translateY(0) scale(1);
+  pointer-events:auto;
+}
+
+.label{
+  font-size:12px;
+  letter-spacing:3px;
+  color:#666;
+  margin-bottom:12px;
+}
+
+h1{
+  font-size:78px;
+  letter-spacing:-3px;
+}
+
+p{
+  color:#aaa;
+  max-width:720px;
+  margin-top:14px;
+  line-height:1.6;
+}
+
+.intro-scene,
+.skills-scene{
+  display:grid;
+  grid-template-columns:minmax(0,1.1fr) minmax(260px,0.9fr);
+  align-items:center;
+  gap:56px;
+}
+
+.intro-copy,
+.skills-copy{
+  min-width:0;
+}
+
+.intro-photo,
+.skills-photo{
+  justify-self:end;
+  width:min(420px,100%);
+}
+
+.intro-photo img,
+.skills-photo img{
+  width:100%;
+  height:auto;
+  display:block;
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,0.12);
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:20px;
+  margin-top:30px;
+}
+
+.card{
+  background:rgba(255,255,255,0.03);
+  border:1px solid rgba(255,255,255,0.08);
+  padding:18px;
+  border-radius:14px;
+  transition:0.3s;
+}
+
+.card:hover{
+  transform:translateY(-6px);
+  border-color:rgba(255,255,255,0.2);
+}
+
+.card a{
+  color:#fff;
+  text-decoration:none;
+  border-bottom:1px solid rgba(255,255,255,0.35);
+}
+
+.skills-list{
+  display:grid;
+  gap:12px;
+  margin-top:24px;
+}
+
+.skills-list p{
+  max-width:620px;
+  margin-top:0;
+}
+
+.contact-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:14px;
+  margin-top:30px;
+}
+
+.contact-button{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:46px;
+  padding:0 22px;
+  border-radius:999px;
+  background:#fff;
+  color:#000;
+  font-size:14px;
+  font-weight:600;
+  text-decoration:none;
+  transition:0.3s ease;
+}
+
+.contact-button:hover{
+  transform:translateY(-3px);
+  background:#d8d8d8;
+}
+
+.contact-link{
+  color:#fff;
+  text-decoration:none;
+}
+
+.sound-toggle{
+  position:fixed;
+  right:40px;
+  bottom:34px;
+  width:42px;
+  height:42px;
+  border:1px solid rgba(255,255,255,0.14);
+  border-radius:50%;
+  background:rgba(255,255,255,0.04);
+  color:#fff;
+  backdrop-filter:blur(14px);
+  cursor:pointer;
+  z-index:12;
+  transition:0.3s ease;
+}
+
+.sound-toggle::before{
+  content:"♪";
+  font-size:18px;
+  line-height:1;
+}
+
+.sound-toggle:hover{
+  transform:translateY(-3px);
+  border-color:rgba(255,255,255,0.35);
+  background:rgba(255,255,255,0.08);
+}
+
+.sound-toggle.is-on{
+  background:#fff;
+  color:#000;
+  border-color:#fff;
+}
+
+.sound-toggle.is-on::before{
+  content:"♫";
+}
+
+.dots{
+  position:fixed;
+  bottom:20px;
+  left:50%;
+  transform:translateX(-50%);
+  display:flex;
+  gap:8px;
+  z-index:12;
+}
+
+.dot{
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  background:#333;
+  cursor:pointer;
+}
+
+.dot.active{background:#fff}
+
+.slide-arrow{
+  position:fixed;
+  bottom:42px;
+  left:50%;
+  width:42px;
+  height:42px;
+  transform:translateX(-50%);
+  border:1px solid rgba(255,255,255,0.14);
+  border-radius:50%;
+  background:rgba(255,255,255,0.04);
+  backdrop-filter:blur(14px);
+  cursor:pointer;
+  z-index:12;
+  transition:0.3s ease;
+}
+
+.slide-arrow::before{
+  content:"";
+  position:absolute;
+  left:50%;
+  top:47%;
+  width:10px;
+  height:10px;
+  border-right:2px solid #fff;
+  border-bottom:2px solid #fff;
+  transform:translate(-50%,-50%) rotate(45deg);
+}
+
+.slide-arrow:hover{
+  transform:translateX(-50%) translateY(-4px);
+  border-color:rgba(255,255,255,0.35);
+  background:rgba(255,255,255,0.08);
+}
+
+.slide-arrow.is-end{
+  opacity:0.35;
+}
+
+@media(max-width:768px){
+  body{
+    min-height:100dvh;
+  }
+  header{
+    align-items:flex-start;
+    gap:12px;
+    padding:14px 18px;
+  }
+  .brand{
+    flex:0 0 auto;
+    font-size:11px;
+    letter-spacing:2px;
+    line-height:32px;
+  }
+  nav{
+    display:flex;
+    gap:6px;
+    max-width:100%;
+    overflow-x:auto;
+    padding-bottom:4px;
+    scrollbar-width:none;
+  }
+  nav::-webkit-scrollbar{display:none}
+  nav a{
+    flex:0 0 auto;
+    margin-left:0;
+    padding:9px 10px;
+    border:1px solid rgba(255,255,255,0.08);
+    border-radius:999px;
+    font-size:12px;
+    background:rgba(255,255,255,0.03);
+  }
+  .scene{
+    justify-content:flex-start;
+    min-height:100dvh;
+    padding:106px 20px 104px;
+    overflow-y:auto;
+    -webkit-overflow-scrolling:touch;
+  }
+  .label{
+    font-size:11px;
+    letter-spacing:2px;
+    margin-bottom:10px;
+  }
+  h1{
+    font-size:clamp(36px,12vw,46px);
+    line-height:0.98;
+    letter-spacing:-1px;
+  }
+  p{
+    max-width:100%;
+    margin-top:12px;
+    font-size:14px;
+    line-height:1.55;
+  }
+  .grid{
+    grid-template-columns:1fr;
+    gap:12px;
+    margin-top:22px;
+  }
+  .card{
+    padding:14px;
+    border-radius:12px;
+  }
+  .card:hover{
+    transform:none;
+  }
+  .intro-scene,
+  .skills-scene{
+    grid-template-columns:1fr;
+    align-content:start;
+    gap:22px;
+    justify-content:center;
+  }
+  .intro-photo,
+  .skills-photo{
+    justify-self:center;
+    width:min(100%,300px);
+  }
+  .intro-photo img,
+  .skills-photo img{
+    border-radius:12px;
+  }
+  .skills-list{
+    gap:10px;
+    margin-top:18px;
+  }
+  .contact-actions{
+    margin-top:22px;
+  }
+  .contact-button{
+    width:100%;
+    min-height:44px;
+  }
+  .sound-toggle{
+    right:18px;
+    bottom:26px;
+    width:40px;
+    height:40px;
+  }
+  .slide-arrow{
+    bottom:40px;
+    width:40px;
+    height:40px;
+  }
+  .dots{
+    bottom:18px;
+  }
+}
+
+@media(max-width:420px){
+  header{
+    flex-direction:column;
+    gap:8px;
+  }
+  .brand{
+    line-height:1;
+  }
+  .scene{
+    padding-top:128px;
+  }
+  .intro-photo,
+  .skills-photo{
+    width:min(100%,260px);
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="bg"></div>
+<div class="progress" id="progress"></div>
+
+<header>
+  <div class="brand">PORTAFOLIO</div>
+  <nav>
+    <a href="#" onclick="go(0)">Sobre mí</a>
+    <a href="#" onclick="go(1)">Experiencia</a>
+    <a href="#" onclick="go(2)">Habilidades</a>
+    <a href="#" onclick="go(3)">Contacto</a>
+  </nav>
+</header>
+
+<div class="scene intro-scene active">
+  <div class="intro-copy">
+    <div class="label">INTRODUCCIÓN</div>
+    <h1>stanislav hromov</h1>
+    <p>19 años &nbsp;&nbsp; Málaga &nbsp;&nbsp; deporte + equipo &nbsp;&nbsp; procesos digitales</p>
+  </div>
+
+  <div class="intro-photo">
+    <img src="intro-photo.jfif" alt="Stanislav Hromov" />
+  </div>
+</div>
+
+<div class="scene">
+  <div class="label">EXPERIENCIA</div>
+  <h1>Experiencia</h1>
+
+  <div class="grid">
+    <div class="card">
+      <h3>Experiencia</h3>
+      <p>Trabajo con procesos digitales y soporte técnico.</p>
+    </div>
+
+    <div class="card">
+      <h3>Mejora continua</h3>
+      <p>Resolución de problemas, organización y disciplina en tareas diarias.</p>
+    </div>
+
+    <div class="card">
+      <h3>Entrenamiento e IT</h3>
+      <p>Experiencia laboral en entrenamiento, tecnología e IT.</p>
+    </div>
+
+    <div class="card">
+      <h3>Objetivo</h3>
+      <p>Formar parte de un equipo dinámico, ayudar a los clientes y crecer en un entorno deportivo.</p>
+    </div>
+  </div>
+</div>
+
+<div class="scene skills-scene">
+  <div class="skills-copy">
+    <div class="label">HABILIDADES</div>
+    <h1>Habilidades</h1>
+
+    <div class="skills-list">
+      <p><strong>Perfil:</strong> persona activa, responsable y orientada al cliente, con interés en el deporte y el trabajo en equipo.</p>
+      <p><strong>Habilidades:</strong> atención al cliente, comunicación clara, trabajo en equipo, actitud positiva y adaptación rápida.</p>
+      <p><strong>Cualidades:</strong> responsabilidad, resistencia al estrés, aprendizaje rápido, pensamiento lógico y disciplina deportiva.</p>
+      <p><strong>Tecnología:</strong> trabajo con tecnologías de IA, software y procesos digitales.</p>
+      <p><strong>Idiomas:</strong> español B1; inglés B1; ucraniano nativo; ruso nativo.</p>
+    </div>
+  </div>
+
+  <div class="skills-photo">
+    <img src="skills-photo.jfif" alt="Habilidades de Stanislav Hromov" />
+  </div>
+</div>
+
+<div class="scene">
+  <div class="label">CONTACTO</div>
+  <h1>Contacto</h1>
+  <p>Estoy abierto a nuevas oportunidades, equipos dinámicos y proyectos donde pueda ayudar a las personas.</p>
+
+  <div class="contact-actions">
+    <a class="contact-button" href="tel:+34643588585">Contacto</a>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <h3>Telegram</h3>
+      <p><a class="contact-link" href="https://t.me/gromstasy" target="_blank" rel="noopener">@gromstasy</a></p>
+    </div>
+
+    <div class="card">
+      <h3>Instagram</h3>
+      <p><a class="contact-link" href="https://www.instagram.com/gromstasy" target="_blank" rel="noopener">@gromstasy</a></p>
+    </div>
+
+    <div class="card">
+      <h3>WhatsApp</h3>
+      <p><a class="contact-link" href="https://wa.me/34643588585" target="_blank" rel="noopener">+34 643 588 585</a></p>
+    </div>
+
+    <div class="card">
+      <h3>Email</h3>
+      <p><a class="contact-link" href="mailto:gromstasy@gmail.com">gromstasy@gmail.com</a></p>
+    </div>
+  </div>
+</div>
+
+<div class="dots">
+  <div class="dot active" onclick="go(0)"></div>
+  <div class="dot" onclick="go(1)"></div>
+  <div class="dot" onclick="go(2)"></div>
+  <div class="dot" onclick="go(3)"></div>
+</div>
+
+<button class="slide-arrow" type="button" aria-label="Siguiente diapositiva" onclick="next()"></button>
+<button class="sound-toggle" type="button" aria-label="Cambiar musica" onclick="toggleMusic()"></button>
+<audio id="bg-track" src="dance-with-me-lucidbeatz.mp3" loop preload="auto"></audio>
+
+<script>
+let current=0;
+const scenes=document.querySelectorAll('.scene');
+const dots=document.querySelectorAll('.dot');
+const progress=document.getElementById('progress');
+const arrow=document.querySelector('.slide-arrow');
+const soundButton=document.querySelector('.sound-toggle');
+const bgTrack=document.getElementById('bg-track');
+let audioCtx;
+let musicNodes=[];
+let musicOn=false;
+let musicTimer;
+let touchStartY=0;
+let touchStartX=0;
+
+function update(){
+  scenes.forEach(s=>s.classList.remove('active'));
+  scenes[current].classList.add('active');
+
+  dots.forEach(d=>d.classList.remove('active'));
+  dots[current].classList.add('active');
+
+  progress.style.width=((current+1)/scenes.length*100)+'%';
+  arrow.classList.toggle('is-end', current===scenes.length-1);
+}
+
+function go(i){
+  current=i;
+  update();
+}
+
+function next(){
+  if(current<scenes.length-1){
+    current++;
+    update();
+  }
+}
+
+function startMusic(){
+  if(musicOn) return;
+
+  if(bgTrack){
+    bgTrack.volume=0.65;
+
+    const playPromise=bgTrack.play();
+
+    if(playPromise){
+      playPromise.then(()=>{
+        musicOn=true;
+        soundButton.classList.add('is-on');
+      }).catch(()=>{
+        startHouseFallback();
+        armAutoplayUnlock();
+      });
+      return;
+    }
+
+    musicOn=true;
+    soundButton.classList.add('is-on');
+    return;
+  }
+
+  startHouseFallback();
+}
+
+function startHouseFallback(){
+  if(musicOn) return;
+
+  audioCtx=new (window.AudioContext||window.webkitAudioContext)();
+
+  const master=audioCtx.createGain();
+  master.gain.value=0.075;
+  master.connect(audioCtx.destination);
+
+  const bass=audioCtx.createOscillator();
+  const bassGain=audioCtx.createGain();
+  const bassNotes=[55,55,65.41,73.42,55,82.41,73.42,65.41];
+  let step=0;
+
+  bass.type='sawtooth';
+  bassGain.gain.value=0.001;
+
+  bass.connect(bassGain);
+  bassGain.connect(master);
+
+  function makeKick(now){
+    const kick=audioCtx.createOscillator();
+    const gain=audioCtx.createGain();
+
+    kick.type='sine';
+    kick.frequency.setValueAtTime(140,now);
+    kick.frequency.exponentialRampToValueAtTime(45,now+0.18);
+    gain.gain.setValueAtTime(0.8,now);
+    gain.gain.exponentialRampToValueAtTime(0.001,now+0.2);
+
+    kick.connect(gain);
+    gain.connect(master);
+    kick.start(now);
+    kick.stop(now+0.22);
+  }
+
+  function makeNoiseHit(now,volume,duration,filterFreq){
+    const buffer=audioCtx.createBuffer(1,audioCtx.sampleRate*duration,audioCtx.sampleRate);
+    const data=buffer.getChannelData(0);
+
+    for(let i=0;i<data.length;i++){
+      data[i]=Math.random()*2-1;
+    }
+
+    const noise=audioCtx.createBufferSource();
+    const filter=audioCtx.createBiquadFilter();
+    const gain=audioCtx.createGain();
+
+    noise.buffer=buffer;
+    filter.type='highpass';
+    filter.frequency.value=filterFreq;
+    gain.gain.setValueAtTime(volume,now);
+    gain.gain.exponentialRampToValueAtTime(0.001,now+duration);
+
+    noise.connect(filter);
+    filter.connect(gain);
+    gain.connect(master);
+    noise.start(now);
+    noise.stop(now+duration);
+  }
+
+  function pulse(){
+    const now=audioCtx.currentTime;
+    const beat=step%16;
+
+    if(beat%4===0) makeKick(now);
+    if(beat===4||beat===12) makeNoiseHit(now,0.22,0.18,1100);
+    if(beat%2===1) makeNoiseHit(now,0.09,0.055,6500);
+
+    bass.frequency.setTargetAtTime(bassNotes[Math.floor(beat/2)%bassNotes.length],now,0.018);
+    bassGain.gain.cancelScheduledValues(now);
+    bassGain.gain.setValueAtTime(0.001,now);
+    bassGain.gain.exponentialRampToValueAtTime(0.09,now+0.035);
+    bassGain.gain.exponentialRampToValueAtTime(0.001,now+0.14);
+
+    step++;
+  }
+
+  bass.start();
+  pulse();
+  musicTimer=setInterval(pulse,125);
+
+  musicNodes.push(bass,bassGain,master);
+  musicOn=true;
+  soundButton.classList.add('is-on');
+}
+
+function stopMusic(){
+  if(bgTrack){
+    bgTrack.pause();
+    bgTrack.currentTime=0;
+  }
+
+  clearInterval(musicTimer);
+  musicTimer=null;
+
+  musicNodes.forEach(node=>{
+    if(node.stop) node.stop();
+    if(node.disconnect) node.disconnect();
+  });
+  musicNodes=[];
+
+  if(audioCtx){
+    audioCtx.close();
+    audioCtx=null;
+  }
+
+  musicOn=false;
+  soundButton.classList.remove('is-on');
+}
+
+function toggleMusic(){
+  if(musicOn){
+    stopMusic();
+  }else{
+    startMusic();
+  }
+}
+
+function armAutoplayUnlock(){
+  if(!audioCtx||audioCtx.state!=='suspended') return;
+
+  stopMusic();
+
+  const unlock=()=>{
+    startMusic();
+    document.removeEventListener('pointerdown',unlock);
+    document.removeEventListener('keydown',unlock);
+  };
+
+  document.addEventListener('pointerdown',unlock,{once:true});
+  document.addEventListener('keydown',unlock,{once:true});
+}
+
+function tryAutoplay(){
+  startMusic();
+  armAutoplayUnlock();
+}
+
+window.addEventListener('load',tryAutoplay);
+
+let lock=false;
+
+window.addEventListener('wheel',(e)=>{
+  if(lock) return;
+
+  if(e.deltaY>0 && current<scenes.length-1){
+    current++;
+    update();
+  }
+
+  if(e.deltaY<0 && current>0){
+    current--;
+    update();
+  }
+
+  lock=true;
+  setTimeout(()=>lock=false,650);
+},{passive:true});
+
+window.addEventListener('touchstart',(e)=>{
+  touchStartY=e.changedTouches[0].clientY;
+  touchStartX=e.changedTouches[0].clientX;
+},{passive:true});
+
+window.addEventListener('touchend',(e)=>{
+  if(lock) return;
+
+  const touchEndY=e.changedTouches[0].clientY;
+  const touchEndX=e.changedTouches[0].clientX;
+  const deltaY=touchStartY-touchEndY;
+  const deltaX=Math.abs(touchStartX-touchEndX);
+
+  if(Math.abs(deltaY)<56||deltaX>80) return;
+
+  if(deltaY>0 && current<scenes.length-1){
+    current++;
+    update();
+  }
+
+  if(deltaY<0 && current>0){
+    current--;
+    update();
+  }
+
+  lock=true;
+  setTimeout(()=>lock=false,650);
+},{passive:true});
+</script>
+
+</body>
+</html>
